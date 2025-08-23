@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Meu Site')</title>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="../path/to/src/pagedone.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -23,12 +29,6 @@
             }
         }
     </script>
-
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="bg-dark-bg text-text-main font-sans">
 
@@ -38,15 +38,13 @@
 
         <div class="relative">
             <div x-data="{ open: false }" @click.away="open = false" class="relative">
-
                 <button @click="open = !open" class="flex items-center space-x-4 focus:outline-none">
                     <div class="mr-3 text-right hidden sm:block">
                         <p class="text-sm font-medium text-text-main">{{ Auth::user()->name ?? 'Usuário' }}</p>
                         <p class="text-xs text-text-light">Conta</p>
                     </div>
                     <div class="h-10 w-10 rounded-full bg-primary text-black flex items-center justify-center font-bold ring-2 ring-offset-2 ring-offset-secondary ring-primary/50">
-                        {{-- {{ strtoupper(substr(Auth::user()->name, 0, 2))) }} --}}
-                        AT
+                        {{ strtoupper(substr(Auth::user()->name ?? 'AT', 0, 2)) }}
                     </div>
                 </button>
 
@@ -79,10 +77,17 @@
 
 <footer class="bg-secondary border-t border-neutral-800 mt-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <p class="text-center text-text-light text-sm">&copy; {{ date('Y') }}  Todos os direitos reservados.</p>
+        <p class="text-center text-text-light text-sm">&copy; {{ date('Y') }} Todos os direitos reservados.</p>
     </div>
 </footer>
 
+<!-- JavaScript -->
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="../path/to/src/pagedone.js"></script>
+
+@yield('scripts')
+
 </body>
 </html>

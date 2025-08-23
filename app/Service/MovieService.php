@@ -38,7 +38,7 @@ class MovieService
                     'genres' => []
                 ];
             }
-            $movies[$id]['genres'][] = $row->name;
+            $movies[$id]['genres'][] = $row->genre_name;
         }
 
         return $movies;

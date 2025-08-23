@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Movie extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+
     protected $fillable = [
         'id',
         'title',
@@ -21,7 +25,6 @@ class Movie extends Model
         'vote_count',
         'genre_ids',
     ];
-
 
     protected $casts = [
         'genre_ids' => 'array',

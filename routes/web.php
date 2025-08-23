@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\MovieController;
+use App\Http\Controllers\AllMoviesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use \App\Http\Controllers\UserController;
@@ -16,12 +16,17 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
-    Route::delete('/movies/{movie}', [MovieController::class, 'destroy'])->name('movies.destroy');
-    Route::post('/movies', [MovieController::class, 'store'])->name('movies.store');
-    Route::post('/movies/filter', [MovieController::class, 'filter'])->name('movies.filter');
-    Route::get('/movies/populateMoviesFromApi', [MovieController::class, 'populateMoviesFromApi'])->name('movies.populateMoviesFromApi');
-    Route::get('/movies/populatedMoviesDetailsFromApi', [MovieController::class, 'populatedMoviesDetailsFromApi'])->name('movies.populatedMoviesDetailsFromApi');
+    #Dashboard
+    Route::get('/dashboard', [\App\Http\Controllers\MovieDashboardController::class, 'index'])->name('movie.dashboard');
+
+    #Todos filmes
+    Route::get('/movies', [AllMoviesController::class, 'index'])->name('movies.index');
+    Route::delete('/movies/{movie}', [AllMoviesController::class, 'destroy'])->name('movies.destroy');
+    Route::post('/movies', [AllMoviesController::class, 'store'])->name('movies.store');
+    Route::post('/movies/filter', [AllMoviesController::class, 'filter'])->name('movies.filter');
+
+
+    Route::get('/movies/populatedMoviesDetailsFromApi', [AllMoviesController::class, 'populatedMoviesDetailsFromApi'])->name('movies.populatedMoviesDetailsFromApi');
 });
 
 

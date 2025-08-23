@@ -1,8 +1,9 @@
-    @extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Catálogo de Filmes')
 
 @section('content')
+
     <div class="container mx-auto px-4 py-8">
         <header class="mb-10 text-center">
             <h1 class="text-4xl font-bold text-primary mb-2">Catálogo de Filmes</h1>
@@ -61,21 +62,17 @@
         @if($totalMovies > 0)
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 @foreach ($movies as $movie)
-                    {{-- Wrapper para posicionar o card em expansão sem quebrar a grade --}}
                     <div class="relative aspect-[2/3]">
-                        {{-- O card agora tem seu próprio estado e eventos de mouse --}}
                         <div x-data="{ expanded: false }"
                              @mouseenter="expanded = true"
                              @mouseleave="expanded = false"
                              class="absolute inset-0 bg-secondary rounded-xl overflow-hidden border border-neutral-800 transition-all duration-300 ease-in-out"
                              :class="{ 'z-20 scale-110 shadow-2xl shadow-primary/30': expanded, 'z-10': !expanded }">
 
-                            {{-- Imagem do Pôster (base) --}}
                             <img src="{{ !empty($movie['poster_path']) ? 'https://image.tmdb.org/t/p/w500' . $movie['poster_path'] : 'https://via.placeholder.com/500x750.png?text=Sem+Imagem' }}"
                                  alt="Poster de {{ $movie['title'] }}"
                                  class="w-full h-full object-cover">
 
-                            {{-- Círculo de avaliação (sempre visível) --}}
                             <div class="absolute top-2 left-2 w-10 h-10 flex items-center justify-center" :class="{ 'opacity-50': expanded }">
                                 <svg class="w-full h-full" viewBox="0 0 36 36">
                                     <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#2d3748" stroke-width="3"/>
@@ -86,12 +83,10 @@
                                 </div>
                             </div>
 
-                            {{-- Título simples quando não está expandido --}}
                             <div class="absolute bottom-0 p-4 w-full bg-gradient-to-t from-black/90 to-transparent transition-opacity duration-300" :class="{ 'opacity-0': expanded }">
                                 <h3 class="text-white font-bold truncate">{{ $movie['title'] }}</h3>
                             </div>
 
-                            {{-- PAINEL DE DETALHES (aparece ao passar o mouse) --}}
                             <div x-show="expanded"
                                  x-transition:enter="transition ease-out duration-200"
                                  x-transition:enter-start="opacity-0"
@@ -142,7 +137,7 @@
             </div>
         @endif
 
-        {{-- O MODAL EM TELA CHEIA FOI REMOVIDO DAQUI --}}
-
     </div>
 @endsection
+
+

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Service\MovieService;
 use App\Models\Movie;
 
-class MovieController extends Controller
+class AllMoviesController extends Controller
 {
 
     public function __construct(private MovieService $movieService)
@@ -23,46 +23,10 @@ class MovieController extends Controller
 
         $totalMovies = count($movies);
 
-        return view('Movies.movies', [
+        return view('Movies.all-movies', [
             'movies' => $movies,
             'totalMovies' => $totalMovies,
         ]);
-    }
-
-
-    public function populateMoviesFromApi()
-    {
-        $apiKey = config('services.tmdb.api_key');
-        $allMovieIds = [];
-
-        for ($page = 1; $page <= 10; $page++) {
-            $apiUrl = "https://api.themoviedb.org/3/movie/popular?api_key={$apiKey}&language=pt-BR&page={$page}";
-            $response = @file_get_contents($apiUrl);
-
-            if ($response === false) {
-                echo "Erro ao buscar a página {$page}.\n";
-                continue;
-            }
-
-            $data = json_decode($response, true);
-
-            if (isset($data['results'])) {
-                foreach ($data['results'] as $movieData) {
-                    $allMovieIds[] = $movieData['id'];
-                    Movie::Where('id', $movieData['id']);
-
-
-                    Movie::updateOrCreate(
-                        ['id' => $movieData['id']],
-                        $movieData
-                    );
-                }
-            }
-            sleep(1);
-        }
-
-
-        echo "Os filmes foram salvos/atualizados no banco de dados com sucesso!\n";
     }
 
     public function populatedMoviesDetailsFromApi()
