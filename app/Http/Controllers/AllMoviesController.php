@@ -3,13 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Models\MovieDetails;
 use Illuminate\Http\Request;
-use App\Service\MovieService;
+use App\Service\AllMoviesService;
 use App\Models\Movie;
 
 class AllMoviesController extends Controller
 {
 
-    public function __construct(private MovieService $movieService)
+    public function __construct(private AllMoviesService $movieService)
     {
 
     }
@@ -22,7 +22,6 @@ class AllMoviesController extends Controller
         $movies = $filteredMovies ?? $movies;
 
         $totalMovies = count($movies);
-
         return view('Movies.all-movies', [
             'movies' => $movies,
             'totalMovies' => $totalMovies,

@@ -34,7 +34,9 @@
 
 <header class="bg-secondary shadow-sm border-b border-neutral-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <a href="{{ route('movies.index') }}" class="text-2xl font-bold text-primary">Site</a>
+        <a href="{{ route('movies.dashboard') }}" class="text-2xl font-bold text-primary">Site</a>
+        <a href="{{ route('movies.dashboard') }}" class="text-2xl font-bold text-primary">Dashboard</a>
+        <a href="{{ route('movies.index') }}" class="text-2xl font-bold text-primary">Todos os Filmes</a>
 
         <div class="relative">
             <div x-data="{ open: false }" @click.away="open = false" class="relative">

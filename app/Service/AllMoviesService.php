@@ -6,23 +6,16 @@ use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Support\Facades\DB;
 
-class MovieService
+class AllMoviesService
 {
-
-    public function deleteMovie(Movie $movie)
-    {
-        $movie->delete($movie);
-    }
     public function returnMovies()
     {
         $movies = [];
-
         $rows = DB::table('movies')
             ->join('movie_genres', 'movies.id', '=', 'movie_genres.movie_id')
             ->join('genres', 'movie_genres.genre_id', '=', 'genres.id')
             ->select('movies.*', 'genres.name as genre_name')
             ->get();
-
         foreach ($rows as $row) {
             $id = $row->id;
 
@@ -42,14 +35,6 @@ class MovieService
         }
 
         return $movies;
-    }
-
-    public function dd($movies){
-        echo "<pre>";
-        print_r($movies);
-        echo "</pre>";
-        die;
-
     }
     public function filterByRating(int $rating)
     {

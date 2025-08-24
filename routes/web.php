@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     #Dashboard
-    Route::get('/dashboard', [\App\Http\Controllers\MovieDashboardController::class, 'index'])->name('movie.dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardMovieController::class, 'index'])->name('movies.dashboard');
 
     #Todos filmes
     Route::get('/movies', [AllMoviesController::class, 'index'])->name('movies.index');
