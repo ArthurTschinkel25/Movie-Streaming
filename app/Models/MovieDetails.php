@@ -17,8 +17,16 @@ class MovieDetails extends Model
         'origin_country',
         'adult',
         'budget',
-
+        'genres',
     ];
+    protected $casts = [
+        'genres' => 'array',
+    ];
+
+    public function getGenresAttribute($value)
+    {
+        return json_decode($value, true);
+    }
 
     public function movie()
     {

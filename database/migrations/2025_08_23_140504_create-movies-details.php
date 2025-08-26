@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('movie_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movie_id')->unique(); // Um para um
+            $table->unsignedBigInteger('movie_id')->unique();
             $table->integer('runtime');
             $table->decimal('popularity', 10, 2);
             $table->string('imdb_id')->nullable();

@@ -24,9 +24,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/movies/{movie}', [AllMoviesController::class, 'destroy'])->name('movies.destroy');
     Route::post('/movies', [AllMoviesController::class, 'store'])->name('movies.store');
     Route::post('/movies/filter', [AllMoviesController::class, 'filter'])->name('movies.filter');
-
-
-    Route::get('/movies/populatedMoviesDetailsFromApi', [AllMoviesController::class, 'populatedMoviesDetailsFromApi'])->name('movies.populatedMoviesDetailsFromApi');
 });
 
 

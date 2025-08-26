@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
 
-            $table->unique(['movie_id', 'genre_id']); // Evita duplicatas
+            $table->unique(['movie_id', 'genre_id']);
         });
     }
 
