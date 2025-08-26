@@ -21,8 +21,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     #Todos filmes
     Route::get('/movies', [AllMoviesController::class, 'index'])->name('movies.index');
-    Route::delete('/movies/{movie}', [AllMoviesController::class, 'destroy'])->name('movies.destroy');
-    Route::post('/movies', [AllMoviesController::class, 'store'])->name('movies.store');
     Route::post('/movies/filter', [AllMoviesController::class, 'filter'])->name('movies.filter');
 });
 
