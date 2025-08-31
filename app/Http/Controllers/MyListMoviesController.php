@@ -3,10 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Service\MyListMoviesService;
 use Illuminate\Http\Request;
 
 class MyListMoviesController extends Controller
 {
+
+    public function __construct(private MyListMoviesService $myLIstMoviesService)
+    {
+
+    }
+    public function saveFavoriteMovie(Request $request)
+    {
+        $this->myLIstMoviesService->saveFavoriteMovie($request);
+    }
+
     public function index()
     {
         $user_id = auth()->id();

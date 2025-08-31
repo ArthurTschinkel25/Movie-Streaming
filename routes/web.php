@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardMovieController;
 use App\Http\Controllers\MyListMoviesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AllMoviesController;
@@ -18,28 +19,38 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     #Dashboard
-    Route::get('/dashboard', [\App\Http\Controllers\DashboardMovieController::class, 'index'])->name('movies.dashboard');
-    Route::post('/save-favorite-movie', [\App\Http\Controllers\DashboardMovieController::class, 'saveFavoriteMovie'])
-        ->middleware('auth')
-        ->name('save-favorite-movie');
+    Route::controller(DashboardMovieController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('movies.dashboard');
+
+    });
+
     #Todos filmes
-    Route::get('/movies', [AllMoviesController::class, 'index'])->name('movies.index');
-    Route::post('/movies/filter', [AllMoviesController::class, 'filter'])->name('movies.filter');
+    Route::controller(AllMoviesController::class)->group(function () {
+        Route::get('/movies', 'index')->name('movies.index');
+        Route::post('/movies/filter', 'filter')->name('movies.filter');
+    });
 
     #Filmes na lista
-
-    Route::get('/movies/my-favorite-movies', [MyListMoviesController::class, 'index'])->name('movies.my-list-movies');
+    Route::controller(MyListMoviesController::class)->group(function () {
+        Route::get('/movies/my-favorite-movies',  'index')->name('movies.my-list-movies');
+        Route::post('/save-favorite-movie', 'saveFavoriteMovie')
+            ->middleware('auth')
+            ->name('save-favorite-movie');
+    });
 });
 
 
+    #Criação de usuário / Login
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/Register',  'Register')->name('user.register');
+        Route::get('/Login',  'login')->name('login');
+        Route::get('/Alterar_senha',  'ChangePassword')->name('user.alterar_senha');
+        Route::put('/Alterar_senha',  'Update')->name('user.update_senha');
+        Route::post('/Register',  'Create')->name('user.create');
+        Route::post('/Login',  'Authenticate')->name('user.login');
+        Route::post('/logout',  'Logout')->name('user.logout');
+    });
 
-Route::get('/Register', [UserController::class, 'Register'])->name('user.register');
-Route::get('/Login', [UserController::class, 'login'])->name('login');
-Route::get('/Alterar_senha', [UserController::class, 'ChangePassword'])->name('user.alterar_senha');
-Route::put('/Alterar_senha', [UserController::class, 'Update'])->name('user.update_senha');
-Route::post('/Register', [UserController::class, 'Create'])->name('user.create');
-Route::post('/Login', [UserController::class, 'Authenticate'])->name('user.login');
-Route::post('/logout', [UserController::class, 'Logout'])->name('user.logout');
 
 
 Route::get('/email/verify', function () {
