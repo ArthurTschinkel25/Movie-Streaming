@@ -144,12 +144,7 @@
                     <span class="hidden lg:block ml-3">Catálogo</span>
                 </a>
 
-                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm rounded-r-lg text-text-light hover:text-text-main">
-                    <i class="fas fa-tv w-5 text-center"></i>
-                    <span class="hidden lg:block ml-3">Séries</span>
-                </a>
-
-                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm rounded-r-lg text-text-light hover:text-text-main">
+                <a href="{{ route('movies.my-list-movies') }}" class="sidebar-item flex items-center px-4 py-3 text-sm rounded-r-lg text-text-light hover:text-text-main">
                     <i class="fas fa-bookmark w-5 text-center"></i>
                     <span class="hidden lg:block ml-3">Minha Lista</span>
                 </a>
@@ -189,7 +184,7 @@
                     <a href="{{ route('movies.index') }}" class="nav-item transition-colors duration-200 {{ request()->routeIs('movies.index') ? 'active text-text-main font-medium' : 'text-text-light hover:text-text-main' }}">
                         Catálogo
                     </a>
-                    <a href="#" class="nav-item transition-colors duration-200 text-text-light hover:text-text-main">
+                    <a href="{{ route('movies.my-list-movies') }}" class="nav-item transition-colors duration-200 text-text-light hover:text-text-main">
                         Minha Lista
                     </a>
                 </nav>

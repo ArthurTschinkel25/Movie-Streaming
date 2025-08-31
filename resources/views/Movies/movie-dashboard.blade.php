@@ -129,7 +129,7 @@
                                 <div class="movie-card aspect-[2/3] bg-secondary rounded-xl overflow-hidden relative card-hover">
                                     <img src="https://image.tmdb.org/t/p/w500/{{ $movie['poster_path'] }}"
                                          alt="Pôster de {{ $movie['title'] }}"
-                                         class="w-full h-full object-cover">
+                                         class="w-full h-full object-contain">
 
                                     <div class="absolute inset-0 bg-gradient-to-t from-dark-bg/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                                         <h3 class="text-lg font-bold mb-2 line-clamp-2">{{ $movie['title'] }}</h3>
@@ -152,6 +152,7 @@
                                                 data-overview="{{ $movie['overview'] ?? 'Sinopse não disponível.' }}">
                                             Ver Detalhes
                                         </button>
+
                                     </div>
 
                                     <div class="absolute top-3 right-3 bg-dark-bg/80 text-primary text-xs font-bold px-2 py-1 rounded-full">
@@ -204,7 +205,7 @@
                                 <div class="movie-card aspect-[2/3] bg-secondary rounded-xl overflow-hidden relative card-hover">
                                     <img src="https://image.tmdb.org/t/p/w500/{{ $movie['poster_path'] }}"
                                          alt="Pôster de {{ $movie['title'] }}"
-                                         class="w-full h-full object-cover">
+                                         class="w-full h-full object-contain"> {{-- <-- Alteração aqui --}}
 
                                     <div class="absolute inset-0 bg-gradient-to-t from-dark-bg/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                                         <h3 class="text-lg font-bold mb-2 line-clamp-2">{{ $movie['title'] }}</h3>
@@ -217,16 +218,26 @@
                                             </div>
                                         </div>
 
-                                        <button class="open-modal-button w-full bg-primary text-dark-bg font-medium py-2 rounded-lg transition-transform hover:scale-[1.02]"
-                                                data-title="{{ $movie['title'] }}"
-                                                data-backdrop="https://image.tmdb.org/t/p/w1280/{{ $movie['backdrop_path'] ?? $movie['poster_path'] }}"
-                                                data-year="{{ \Carbon\Carbon::parse($movie['release_date'])->format('Y') }}"
-                                                data-rating="{{ number_format($movie['vote_average'], 1) }}"
-                                                data-runtime="{{ $runtimeFormatted }}"
-                                                data-genres='@json(isset($movie['genres']) ? array_slice($movie['genres'], 0, 3) : [])'
-                                                data-overview="{{ $movie['overview'] ?? 'Sinopse não disponível.' }}">
-                                            Ver Detalhes
-                                        </button>
+                                        <div class="flex items-center gap-2 mt-4">
+                                            <button class="open-modal-button w-full bg-primary text-dark-bg font-medium py-2 rounded-lg transition-transform hover:scale-[1.02]"
+                                                    data-title="{{ $movie['title'] }}"
+                                                    data-backdrop="https://image.tmdb.org/t/p/w1280/{{ $movie['backdrop_path'] ?? $movie['poster_path'] }}"
+                                                    data-year="{{ \Carbon\Carbon::parse($movie['release_date'])->format('Y') }}"
+                                                    data-rating="{{ number_format($movie['vote_average'], 1) }}"
+                                                    data-runtime="{{ $runtimeFormatted }}"
+                                                    data-genres='@json(isset($movie['genres']) ? array_slice($movie['genres'], 0, 3) : [])'
+                                                    data-overview="{{ $movie['overview'] ?? 'Sinopse não disponível.' }}">
+                                                Detalhes
+                                            </button>
+
+                                            <form method="POST" action="{{ route('save-favorite-movie') }}">
+                                                @csrf
+                                                <input type="hidden" name="movie_id" value="{{ $movie['movie_id'] }}">
+                                                <button type="submit" title="Adicionar aos Favoritos" class="flex-shrink-0 w-10 h-10 bg-white/10 hover:bg-white/20 text-text-main font-bold rounded-lg flex items-center justify-center transition-colors">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
 
                                     <div class="absolute top-3 right-3 bg-amber-500/90 text-dark-bg text-xs font-bold px-2 py-1 rounded-full">
@@ -250,7 +261,6 @@
 @section('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Configuração do carrossel de destaque
             const featuredSwiper = new Swiper(".featured-carousel", {
                 loop: true,
                 autoplay: {

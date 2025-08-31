@@ -11,9 +11,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory()->create([
-            'name' => 'Test UserController',
-            'email' => 'test@example.com',
-        ]);
+       $this->call([
+           MovieSeeder::class,
+           MovieDetailsSeeder::class,
+       ]);
     }
 }

@@ -2,41 +2,35 @@
 
 namespace App\Service;
 
-use App\Models\Genre;
 use App\Models\Movie;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class AllMoviesService
 {
-    public function returnMovies()
+
+    private function getAndSanitizeMovies(Builder $query): array
     {
-        $movies = [];
-        $rows = DB::table('movies')
-            ->join('movie_genres', 'movies.id', '=', 'movie_genres.movie_id')
-            ->join('genres', 'movie_genres.genre_id', '=', 'genres.id')
-            ->select('movies.*', 'genres.name as genre_name')
-            ->get();
-        foreach ($rows as $row) {
-            $id = $row->id;
+        return $query->select('movies.*', 'movie_details.*', 'movies.id as movie_id')
+            ->join('movie_details', 'movies.id', '=', 'movie_details.movie_id')
+            ->get()
 
-            if(!isset($movies[$id])){
-                $movies[$id] = [
-                    'title' => $row->title,
-                    'poster_path' => $row->poster_path,
-                    'overview' => $row->overview,
-                    'backdrop_path' => $row->backdrop_path,
-                    'release_date' => $row->release_date,
-                    'vote_average' => $row->vote_average,
-                    'vote_count' => $row->vote_count,
-                    'genres' => []
-                ];
-            }
-            $movies[$id]['genres'][] = $row->genre_name;
-        }
+            ->map(function ($movie) {
 
-        return $movies;
+                if (!is_array($movie->genres)) {
+                    $movie->genres = [];
+                }
+                return $movie;
+            })
+            ->toArray();
     }
-    public function filterByRating(int $rating)
+
+    public function returnMovies(): array
+    {
+        $query = Movie::query();
+        return $this->getAndSanitizeMovies($query);
+    }
+
+    public function filterByRating(int $rating): array
     {
         $query = Movie::query();
 
@@ -44,27 +38,25 @@ class AllMoviesService
             case 0:
                 break;
             case 1:
-                $query->whereBetween('vote_average', [0, 2]);
+                $query->whereBetween('vote_average', [0, 2.99]);
                 break;
             case 2:
-                $query->whereBetween('vote_average', [3, 5]);
+                $query->whereBetween('vote_average', [3, 5.99]);
                 break;
             case 3:
-                $query->whereBetween('vote_average', [6, 7]);
+                $query->whereBetween('vote_average', [6, 7.99]);
                 break;
             case 4:
-                $query->whereBetween('vote_average', [8, 9]);
+                $query->whereBetween('vote_average', [8, 9.99]);
                 break;
             case 5:
-                $query->whereBetween('vote_average', [10,10]);
+                $query->where('vote_average', 10);
                 break;
             default:
                 break;
         }
 
-        return $query->orderBy('vote_average', 'desc')->get();
-
+        return $this->getAndSanitizeMovies($query->orderBy('vote_average', 'desc'));
     }
-
-
 }
+

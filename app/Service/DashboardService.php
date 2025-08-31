@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\Movie;
+use App\Models\MoviesUser;
 use Illuminate\Support\Facades\DB;
 
 class DashboardService
@@ -10,7 +11,7 @@ class DashboardService
     public function returnDashboardMovies()
     {
         try {
-            $recentMovies = Movie::select('movies.*', 'movie_details.*')
+            $recentMovies = Movie::select('movies.id as movie_id' , 'movies.*', 'movie_details.*')
                 ->join('movie_details', 'movie_details.movie_id', '=', 'movies.id')
                 ->whereYear('release_date', now()->year)
                 ->where('movie_details.runtime', '!=', '0')
@@ -21,12 +22,13 @@ class DashboardService
                 ->get()
                 ->map(function($movie) {
                     $movieArray = $movie->toArray();
-                    $movieArray['genres'] = json_decode($movie->genres, true) ?? [];
+                    $decodedGenres = json_decode($movie->genres, true);
+                    $movieArray['genres'] = is_array($decodedGenres) ? $decodedGenres : [];
                     return $movieArray;
                 })
                 ->toArray();
 
-            $goodRatingMovies = Movie::select('movies.*', 'movie_details.*')
+            $goodRatingMovies = Movie::select('movies.id as movie_id', 'movies.*', 'movie_details.*')
                 ->join('movie_details', 'movie_details.movie_id', '=', 'movies.id')
                 ->where('movie_details.runtime', '!=', '0')
                 ->where('vote_average', '>=', 8.5)
@@ -36,12 +38,13 @@ class DashboardService
                 ->get()
                 ->map(function($movie) {
                     $movieArray = $movie->toArray();
-                    $movieArray['genres'] = json_decode($movie->genres, true) ?? [];
+                    $decodedGenres = json_decode($movie->genres, true);
+                    $movieArray['genres'] = is_array($decodedGenres) ? $decodedGenres : [];
                     return $movieArray;
                 })
                 ->toArray();
 
-            $mostPopularMovies = Movie::select('movies.*', 'movie_details.*')
+            $mostPopularMovies = Movie::select('movies.id as movie_id', 'movies.*', 'movie_details.*')
                 ->join('movie_details', 'movie_details.movie_id', 'movies.id')
                 ->where('movie_details.runtime', '!=', '0')
                 ->where('vote_average', '!=', '0')
@@ -51,7 +54,8 @@ class DashboardService
                 ->get()
                 ->map(function($movie) {
                     $movieArray = $movie->toArray();
-                    $movieArray['genres'] = json_decode($movie->genres, true) ?? [];
+                    $decodedGenres = json_decode($movie->genres, true);
+                    $movieArray['genres'] = is_array($decodedGenres) ? $decodedGenres : [];
                     return $movieArray;
                 })
                 ->toArray();

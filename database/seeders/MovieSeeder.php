@@ -28,16 +28,13 @@ class MovieSeeder extends Seeder
             if (!isset($data['results'])) continue;
 
             foreach ($data['results'] as $movie) {
-                // Previne erro de campos faltantes
                 Movie::create([
-                    'id' => $movie['id'] ?? null,
                     'title' => $movie['title'] ?? null,
                     'original_title' => $movie['original_title'] ?? null,
                     'overview' => $movie['overview'] ?? null,
                     'poster_path' => $movie['poster_path'] ?? null,
                     'backdrop_path' => $movie['backdrop_path'] ?? null,
                     'release_date' => !empty($movie['release_date']) ? $movie['release_date'] : null,
-                    'runtime' => $movie['runtime'] ?? null,
                     'vote_average' => $movie['vote_average'] ?? null,
                     'vote_count' => $movie['vote_count'] ?? null,
                     'genre_ids' => $movie['genre_ids'] ?? [],

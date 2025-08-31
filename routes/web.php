@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MyListMoviesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AllMoviesController;
 use Illuminate\Support\Facades\Route;
@@ -18,10 +19,16 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     #Dashboard
     Route::get('/dashboard', [\App\Http\Controllers\DashboardMovieController::class, 'index'])->name('movies.dashboard');
-
+    Route::post('/save-favorite-movie', [\App\Http\Controllers\DashboardMovieController::class, 'saveFavoriteMovie'])
+        ->middleware('auth')
+        ->name('save-favorite-movie');
     #Todos filmes
     Route::get('/movies', [AllMoviesController::class, 'index'])->name('movies.index');
     Route::post('/movies/filter', [AllMoviesController::class, 'filter'])->name('movies.filter');
+
+    #Filmes na lista
+
+    Route::get('/movies/my-favorite-movies', [MyListMoviesController::class, 'index'])->name('movies.my-list-movies');
 });
 
 
